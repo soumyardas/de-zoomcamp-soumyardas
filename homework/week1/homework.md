@@ -21,7 +21,7 @@ Which tag has the following text? - *Write the image ID to the file*
 - `--idimage string`
 - `--idfile string`
 
->Anwer (correct):
+>Anwer:
 ```
 --iidfile string
 ```
@@ -30,6 +30,8 @@ Which tag has the following text? - *Write the image ID to the file*
 ## Question 2. Understanding docker first run 
 
 Run docker with the python:3.9 image in an iterative mode and the entrypoint of bash.
+``` docker run -it --entrypoint=bash python:3.9 ```
+
 Now check the python modules that are installed ( use pip list). 
 How many python packages/modules are installed?
 
@@ -37,6 +39,11 @@ How many python packages/modules are installed?
 - 6
 - 3
 - 7
+
+>Anwer:
+```
+3
+```
 
 # Prepare Postgres
 
@@ -65,6 +72,22 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 17630
 - 21090
 
+``` select
+        count(1)
+    from
+        green_taxi_trips
+    where 
+        lpep_pickup_datetime > '2019-01-15 00:00:00' 
+        and
+        lpep_dropoff_datetime < '2019-01-16 00:00:00'
+```          
+
+
+>Anwer:
+```
+20530
+```
+
 ## Question 4. Largest trip for each day
 
 Which was the day with the largest trip distance
@@ -75,6 +98,21 @@ Use the pick up time for your calculations.
 - 2019-01-15
 - 2019-01-10
 
+``` select
+        tpep_pickup_datetime
+    from
+        green_taxi_trips
+    where 
+        trip_distance =
+        (select max(trip_distance) from green_taxi_trips)
+```          
+
+
+>Anwer:
+```
+2019-01-15
+```
+
 ## Question 5. The number of passengers
 
 In 2019-01-01 how many trips had 2 and 3 passengers?
@@ -83,6 +121,22 @@ In 2019-01-01 how many trips had 2 and 3 passengers?
 - 2: 1532 ; 3: 126
 - 2: 1282 ; 3: 254
 - 2: 1282 ; 3: 274
+
+``` select
+        count(*)
+    from
+        green_taxi_trips
+    where 
+        cast(tpep_pickup_datetime as date)= '2019-01-01'
+        and
+        passenger_count=2
+```          
+
+
+>Anwer:
+```
+2: 1282 ; 3: 254
+```
 
 
 ## Question 6. Largest tip
@@ -97,15 +151,26 @@ Note: it's not a typo, it's `tip` , not `trip`
 - South Ozone Park
 - Long Island City/Queens Plaza
 
+`` select
+        t.tip_amount,
+        pul."Zone" as pickup,
+        dul."Zone" as dropoff
+    from
+        green_taxi_trips t,
+        zones pul,
+        zones dul
+    where 
+        t."PULocationID" = pul."LocationID"
+        and
+        t."DOLocationID" = dul."LocationID"
+        and
+        pul."Zone" like "Astoria"
+    order by
+        t.tip_amount desc limit 1
+```          
 
-## Submitting the solutions
 
-* Form for submitting: [form](https://forms.gle/EjphSkR1b3nsdojv7)
-* You can submit your homework multiple times. In this case, only the last submission will be used. 
-
-Deadline: 26 January (Thursday), 22:00 CET
-
-
-## Solution
-
-We will publish the solution here
+>Anwer:
+```
+Long Island City/Queens Plaza
+```
