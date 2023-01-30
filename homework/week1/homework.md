@@ -72,14 +72,15 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 17630
 - 21090
 
-``` select
-        count(1)
-    from
-        green_taxi_trips
-    where 
-        lpep_pickup_datetime > '2019-01-15 00:00:00' 
-        and
-        lpep_dropoff_datetime < '2019-01-16 00:00:00'
+``` 
+select
+    count(1)
+from
+    green_taxi_trips
+where 
+    lpep_pickup_datetime > '2019-01-15 00:00:00' 
+    and
+    lpep_dropoff_datetime < '2019-01-16 00:00:00'
 ```          
 
 
@@ -98,13 +99,14 @@ Use the pick up time for your calculations.
 - 2019-01-15
 - 2019-01-10
 
-``` select
-        tpep_pickup_datetime
-    from
-        green_taxi_trips
-    where 
-        trip_distance =
-        (select max(trip_distance) from green_taxi_trips)
+``` 
+select
+    tpep_pickup_datetime
+from
+    green_taxi_trips
+where 
+    trip_distance =
+    (select max(trip_distance) from green_taxi_trips)
 ```          
 
 
@@ -122,14 +124,15 @@ In 2019-01-01 how many trips had 2 and 3 passengers?
 - 2: 1282 ; 3: 254
 - 2: 1282 ; 3: 274
 
-``` select
-        count(*)
-    from
-        green_taxi_trips
-    where 
-        cast(tpep_pickup_datetime as date)= '2019-01-01'
-        and
-        passenger_count=2
+``` 
+select
+    count(*)
+from
+    green_taxi_trips
+where 
+    cast(tpep_pickup_datetime as date)= '2019-01-01'
+    and
+    passenger_count=2
 ```          
 
 
@@ -151,22 +154,23 @@ Note: it's not a typo, it's `tip` , not `trip`
 - South Ozone Park
 - Long Island City/Queens Plaza
 
-`` select
-        t.tip_amount,
-        pul."Zone" as pickup,
-        dul."Zone" as dropoff
-    from
-        green_taxi_trips t,
-        zones pul,
-        zones dul
-    where 
-        t."PULocationID" = pul."LocationID"
-        and
-        t."DOLocationID" = dul."LocationID"
-        and
-        pul."Zone" like "Astoria"
-    order by
-        t.tip_amount desc limit 1
+```
+select
+    t.tip_amount,
+    pul."Zone" as pickup,
+    dul."Zone" as dropoff
+from
+    green_taxi_trips t,
+    zones pul,
+    zones dul
+where 
+    t."PULocationID" = pul."LocationID"
+    and
+    t."DOLocationID" = dul."LocationID"
+    and
+    pul."Zone" like "Astoria"
+order by
+    t.tip_amount desc limit 1 
 ```          
 
 
